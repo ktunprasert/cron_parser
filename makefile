@@ -10,5 +10,5 @@ test:
 
 # Run the Python script in the Docker container
 run:
-	docker-compose run cron python cron_parser.py $(filter-out $@,$(MAKECMDGOALS))
+	docker-compose run cron python cron_parser.py "$(filter-out $@,$(MAKECMDGOALS))"
 
