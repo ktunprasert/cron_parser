@@ -34,6 +34,10 @@ def parse_field(expr: str, field: CronField) -> List[int]:
         return list(range(field_min, field_max + 1))
 
     for part in expr.split(","):
+        if part == "*":
+            values = values.union(range(field_min, field_max + 1))
+            break
+
         if "-" in part:
             start, end = map(int, part.split("-"))
             if start < field_min or start > field_max:
