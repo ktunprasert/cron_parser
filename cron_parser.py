@@ -63,15 +63,8 @@ def parse_cron(cron: str) -> None:
         raise ValueError(f"Invalid CRON expression expected minimum length 6: {parts}")
 
     fields = {
-        CronField.MINUTE: [],
-        CronField.HOUR: [],
-        CronField.DAY: [],
-        CronField.MONTH: [],
-        CronField.WEEKDAY: [],
+        field: parse_field(expr, field) for field, expr in zip(CronField, parts[:5])
     }
-
-    for expr, field in zip(parts[:5], fields):
-        fields[field] = parse_field(expr, field)
 
     cmd = parts[5:]
     print_fields(fields, " ".join(cmd))
