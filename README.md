@@ -11,7 +11,29 @@ This project is a command line utility written in Python that parses CRON expres
 
 ## Getting Started
 
-Then build the Docker image with:
+#### Python
+
+Clone the repository, then install the dependencies (required for testing)
+
+```bash
+python3 -m pip install -r requirements.txt
+```
+
+Run the program:
+
+```bash
+python3 cron_parser.py "* * * * * /usr/bin/find"
+```
+
+Unit tests:
+
+```bash
+python3 -m pytest
+```
+
+#### Makefile
+
+Clone the repository, then build the Docker image with:
 
 ```bash
 make build
