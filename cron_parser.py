@@ -45,8 +45,11 @@ def parse_field(expr: str, field: CronField) -> List[int]:
 
             values = values.union(range(start, end + 1))
         elif "/" in part:
-            step = int(part.split("/")[-1])
-            values = values.union(range(field_min, field_max + 1, step))
+            start, step = part.split("/")
+            if start == "*":
+                values = values.union(range(field_min, field_max + 1, int(step)))
+            else:
+                values = values.union(range(int(start), field_max + 1, int(step)))
         else:
             val = int(part)
             if val < field_min or val > field_max:
