@@ -96,14 +96,23 @@ def parse_cron(cron: str) -> None:
     }
 
     cmd = parts[5:]
-    print_fields(fields, " ".join(cmd))
+    cmd_split = []
+    for c in cmd:
+        for s in c.split("/"):
+            if s == "":
+                continue
+            cmd_split.append(s)
+    print_fields(fields, cmd_split)
 
 
-def print_fields(fields: Dict[CronField, List[int]], cmd: str = "") -> None:
+def print_fields(fields: Dict[CronField, List[int]], cmd: List[str] = []) -> None:
     for field, values in fields.items():
         print(f"{field.getLabel():14} {' '.join(map(str, values))}")
 
-    print(f"{'command':14} {cmd}")
+    [first, *cmd] = cmd
+    print(f"{'command':14} {first}")
+    for c in cmd:
+        print(f"{' ':14} {c}")
 
 
 if __name__ == "__main__":
