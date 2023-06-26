@@ -30,16 +30,37 @@ def parse_field(expr: str, field: CronField) -> List[int]:
     field_min, field_max = field.value
     values = set()
 
+    weekday_to_int = {
+        "Mon": 0,
+        "Tue": 1,
+        "Wed": 2,
+        "Thu": 3,
+        "Fri": 4,
+        "Sat": 5,
+        "Sun": 6,
+    }
+
     if expr == "*":
         return list(range(field_min, field_max + 1))
 
     for part in expr.split(","):
+        if field == CronField.WEEKDAY and part in weekday_to_int:
+            part = str(weekday_to_int[part])
+
         if part == "*":
             values = values.union(range(field_min, field_max + 1))
             break
 
         if "-" in part:
-            start, end = map(int, part.split("-"))
+            suffix = 1
+            if "/" in part:
+                part, suffix = part.split("/")
+
+            start, end = part.split("-")
+
+            start = weekday_to_int.get(start, int(start))
+            end = weekday_to_int.get(end, int(end))
+
             if start < field_min or start > field_max:
                 raise ValueError(f"Value out of range for {field.name}: {part}")
 
