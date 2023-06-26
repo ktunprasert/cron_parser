@@ -64,7 +64,12 @@ def parse_field(expr: str, field: CronField) -> List[int]:
             if start < field_min or start > field_max:
                 raise ValueError(f"Value out of range for {field.name}: {part}")
 
-            values = values.union(range(start, end + 1))
+            if end < start:
+                for i in range(start, end + field_max + 2):
+                    values.add(i % (field_max + 1))
+            else:
+                values = values.union(range(start, end + 1, int(suffix)))
+
         elif "/" in part:
             start, step = part.split("/")
             if start == "*":
