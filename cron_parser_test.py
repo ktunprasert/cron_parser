@@ -26,6 +26,10 @@ def test_parse_field():
     assert parse_field("1-5,*/15", CronField.DAY) == [1, 2, 3, 4, 5, 16, 31]
     assert parse_field("1-5,2-3", CronField.DAY) == [1, 2, 3, 4, 5]
 
+    assert parse_field("Mon-Fri", CronField.WEEKDAY) == [0, 1, 2, 3, 4]
+    assert parse_field("Mon-3", CronField.WEEKDAY) == [0, 1, 2, 3]
+    assert parse_field("1-12/3", CronField.WEEKDAY) == [1, 4, 7, 10]
+
 
 def test_parse_cron(capsys):
     with pytest.raises(ValueError):
